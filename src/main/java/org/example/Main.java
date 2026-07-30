@@ -45,11 +45,11 @@ public class Main {
         String content = readContent(CONTENT_FILE);
 
         if (emails.isEmpty()) {
-            System.out.println("[ERROR] emails.txt 中没有找到任何邮箱地址，请添加邮箱后重试。");
+            System.out.println("[ERROR] cant find emails in emails.txt");
             return;
         }
         if (content.isBlank()) {
-            System.out.println("[ERROR] content.txt 中没有找到反馈内容，请填写内容后重试。");
+            System.out.println("[ERROR] cant find anything in content.txt");
             return;
         }
 
@@ -57,7 +57,7 @@ public class Main {
             robot = new Robot();
             robot.setAutoDelay(20);
         } catch (AWTException e) {
-            System.err.println("[ERROR] 无法初始化 Robot: " + e.getMessage());
+            System.err.println("[ERROR]Error" + e.getMessage());
             return;
         }
 
@@ -76,34 +76,34 @@ public class Main {
         wait = new WebDriverWait(driver, Duration.ofSeconds(15));
 
         System.out.println("==========================================");
-        System.out.println("  蔚蓝档案 自动反馈脚本");
-        System.out.println("  按 F2 键随时停止");
+        System.out.println("Welcome to BlueArchive Auto Feedback Tool");
+        System.out.println("Press F2 to Stop");
         System.out.println("==========================================");
-        System.out.println("邮箱数量: " + emails.size());
-        System.out.println("反馈内容: " + content.substring(0, Math.min(50, content.length())) + "...");
+        System.out.println("Quantity: " + emails.size());
+        System.out.println("Content: " + content.substring(0, Math.min(50, content.length())) + "...");
         System.out.println("==========================================");
 
         try {
             boolean isFirst = true;
             for (int i = 0; i < emails.size(); i++) {
                 if (!running) {
-                    System.out.println("\n[STOP] 用户按下了 F2，脚本已停止。");
+                    System.out.println("\n[STOP]Stop");
                     break;
                 }
 
                 String email = emails.get(i).trim();
                 if (email.isEmpty()) continue;
 
-                System.out.println("\n[" + (i + 1) + "/" + emails.size() + "] 正在处理: " + email);
+                System.out.println("\n[" + (i + 1) + "/" + emails.size() + "] Processing: " + email);
 
                 try {
                     submitFeedback(email, content, isFirst);
                     isFirst = false;
-                    System.out.println("  >>> 提交完成: " + email);
+                    System.out.println("  >>> Succeed: " + email);
                     removeFromFile(EMAILS_FILE, email);
                 } catch (Exception e) {
                     if (!running) break;
-                    System.err.println("  >>> 提交失败: " + email + " - " + e.getMessage());
+                    System.err.println("  >>> Failed: " + email + " - " + e.getMessage());
                     try { driver.navigate().to(TARGET_URL); } catch (Exception ignored) {}
                 }
 
@@ -113,7 +113,7 @@ public class Main {
             driver.quit();
             try { GlobalScreen.unregisterNativeHook(); } catch (Exception ignored) {}
             System.out.println("\n==========================================");
-            System.out.println("  脚本执行完毕");
+            System.out.println("  Finish");
             System.out.println("==========================================");
         }
     }
@@ -128,13 +128,13 @@ public class Main {
                 public void nativeKeyPressed(NativeKeyEvent e) {
                     if (e.getKeyCode() == NativeKeyEvent.VC_F2) {
                         running = false;
-                        System.out.println("\n[F2] 停止信号已接收，当前操作完成后将退出...");
+                        System.out.println("\n[F2]Finish soon...");
                     }
                 }
             });
-            System.out.println("[INFO] F2 热键已注册，按 F2 即可随时停止脚本。");
+            System.out.println("[INFO]Stop");
         } catch (Exception e) {
-            System.err.println("[WARN] 无法注册 F2 热键: " + e.getMessage());
+            System.err.println("[WARN]Error" + e.getMessage());
         }
     }
 
@@ -243,39 +243,39 @@ public class Main {
             step("[4] enter",    Main::nativeEnter);
             step("[5] tab",      Main::nativeTab);
             step("[6] enter",    Main::nativeEnter);
-            step("[7] 等1.5s",   () -> robot.delay(1500));
+            step("[7] Wait for 1.5s",   () -> robot.delay(1500));
         } else {
             // ====== 后续：鼠标点击选下拉菜单 ======
-            step("[1] 移到696,774 + 点击", () -> nativeClick(696, 774));
-            step("[2] 移到677,868 + 点击", () -> nativeClick(677, 868));
-            step("[3] 移到923,838 + 点击", () -> nativeClick(923, 838));
-            step("[4] 等1.5s",              () -> robot.delay(1500));
+            step("[1] Move to 696,774 + 点击", () -> nativeClick(696, 774));
+            step("[2] Move to 677,868 + 点击", () -> nativeClick(677, 868));
+            step("[3] Move to 923,838 + 点击", () -> nativeClick(923, 838));
+            step("[4] Wait for 1.5s",              () -> robot.delay(1500));
         }
 
         // ====== 以下全部用鼠标点击 ======
 
-        step("[8] 点500,480",  () -> nativeClick(500, 480));
-        step("[9] 点500,650",  () -> nativeClick(500, 650));
-        step("[10] 点500,850", () -> nativeClick(500, 850));
-        step("[11] 点500,956", () -> nativeClick(500, 956));
+        step("[8] Click 500,480",  () -> nativeClick(500, 480));
+        step("[9] Click 500,650",  () -> nativeClick(500, 650));
+        step("[10] Click 500,850", () -> nativeClick(500, 850));
+        step("[11] Click 500,956", () -> nativeClick(500, 956));
 
-        step("[12] 粘贴邮箱",   () -> nativePaste(email));
+        step("[12] Paste email",   () -> nativePaste(email));
         step("[13] tab",        Main::nativeTab);
-        step("[14] 粘贴邮箱",   () -> nativePaste(email));
+        step("[14] Paste email",   () -> nativePaste(email));
         step("[15] tab×2",      () -> { nativeTab(); nativeTab(); });
-        step("[16] 粘贴意见",   () -> nativePaste(content));
+        step("[16] Paste content",   () -> nativePaste(content));
 
-        step("[17] 点1064,902", () -> nativeClick(1064, 902));
-        step("[18] 滚轮下滚",   Main::nativeScrollDown);
-        step("[19] 点945,795",  () -> nativeClick(945, 795));
+        step("[17] Click 1064,902", () -> nativeClick(1064, 902));
+        step("[18] down",   Main::nativeScrollDown);
+        step("[19] Click 945,795",  () -> nativeClick(945, 795));
 
         robot.delay(1000);
 
         step("[20] Ctrl+L",      Main::nativeCtrlL);
-        step("[21] 输入URL",      () -> nativeType(TARGET_URL));
+        step("[21] In put URL",      () -> nativeType(TARGET_URL));
         step("[22] Enter",        Main::nativeEnter);
-        step("[23] 等待1.5秒",    () -> robot.delay(1500));
-        step("[24] 鼠标左键",     () -> {
+        step("[23] Wait for 1.5秒",    () -> robot.delay(1500));
+        step("[24] Left click",     () -> {
             robot.mousePress(InputEvent.BUTTON1_DOWN_MASK);
             robot.delay(30);
             robot.mouseRelease(InputEvent.BUTTON1_DOWN_MASK);
@@ -285,7 +285,7 @@ public class Main {
     private static void focusBrowser() {
         // 把鼠标移到浏览器页面中央点一下，确保焦点在页面上
         smoothMove(600, 360);
-        System.out.println("    -> focusBrowser 点击 (600, 360)");
+        System.out.println("    -> focusBrowser click (600, 360)");
         robot.delay(100);
         robot.mousePress(InputEvent.BUTTON1_DOWN_MASK);
         robot.delay(30);
@@ -314,9 +314,9 @@ public class Main {
             List<String> lines = Files.readAllLines(path);
             lines.removeIf(line -> line.trim().equals(email));
             Files.write(path, lines);
-            System.out.println("  [已从 emails.txt 中删除: " + email + "]");
+            System.out.println("  [deleted this email in emails.txt: " + email + "]");
         } catch (IOException e) {
-            System.err.println("  [WARN] 无法更新 emails.txt: " + e.getMessage());
+            System.err.println("  [WARN] cant update emails.txt: " + e.getMessage());
         }
     }
 
