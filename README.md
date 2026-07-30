@@ -12,4 +12,5 @@ You can add multiple email addresses to [emails.txt].Remember, only one email ad
 
 
 ![example](https://raw.githubusercontent.com/asdkwawjd/auto-BlueArchive-feedback/main/img.png)
+
 The content([content.txt]) has already been written, and you can make modifications
