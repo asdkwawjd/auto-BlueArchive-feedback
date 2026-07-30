@@ -118,7 +118,7 @@ public class Main {
         }
     }
 
-    // ==================== F2 热键 ====================
+
 
     private static void registerF2Hotkey() {
         try {
@@ -138,7 +138,7 @@ public class Main {
         }
     }
 
-    // ==================== 原生键盘工具（全部用 Robot，不依赖 Selenium Actions） ====================
+
 
     private static void nativeTab() {
         robot.keyPress(KeyEvent.VK_TAB);
@@ -227,7 +227,7 @@ public class Main {
         robot.mouseMove(targetX, targetY);
     }
 
-    // ==================== 主流程 ====================
+
 
     private static void submitFeedback(String email, String content, boolean isFirst) {
         driver.get(TARGET_URL);
@@ -236,7 +236,6 @@ public class Main {
         focusBrowser();
 
         if (isFirst) {
-            // ====== 首次：键盘操作选下拉菜单 ======
             step("[1] tab × 1",  Main::nativeTab);
             step("[2] enter",    Main::nativeEnter);
             step("[3] ↓×4",     () -> { for (int i = 0; i < 4; i++) nativeDown(); });
@@ -252,7 +251,7 @@ public class Main {
             step("[4] Wait for 1.5s",              () -> robot.delay(1500));
         }
 
-        // ====== 以下全部用鼠标点击 ======
+
 
         step("[8] Click 500,480",  () -> nativeClick(500, 480));
         step("[9] Click 500,650",  () -> nativeClick(500, 650));
@@ -293,7 +292,7 @@ public class Main {
         robot.delay(300);
     }
 
-    // ==================== 步骤工具 ====================
+
 
     private static void step(String label, Runnable action) {
         if (!running) return;
@@ -302,7 +301,7 @@ public class Main {
         robot.delay(150);
     }
 
-    // ==================== 工具 ====================
+
 
     private static void randomDelay(int min, int max) {
         if (!running) return;
