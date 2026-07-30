@@ -9,4 +9,5 @@ This script can automatically open your Chrome browser and send feedback to Blue
 # Tip
 Press **F2** to pause
 You can add multiple email addresses to [emails.txt].Remember, only one email address per line, no spaces.
+![example](https://raw.githubusercontent.com/asdkwawjd/auto-BlueArchive-feedback/main/img.png)
 The content([content.txt]) has already been written, and you can make modifications
