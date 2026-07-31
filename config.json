@@ -1,0 +1,44 @@
+{
+  "files": {
+    "emails": "emails.txt",
+    "content": "content.txt"
+  },
+  "browser": {
+    "binary": "C:\\Users\\Administrator\\AppData\\Local\\Google\\Chrome\\Bin\\chromex.exe",
+    "waitSeconds": 15
+  },
+  "delays": {
+    "betweenEmailsMinMs": 2000,
+    "betweenEmailsMaxMs": 4000,
+    "robotAutoMs": 20,
+    "keyHoldMs": 30,
+    "clipboardMs": 50,
+    "clickBeforeMs": 80,
+    "clickHoldMs": 30,
+    "stepMs": 150,
+    "pageTransitionMs": 1500,
+    "afterSubmitMs": 1000,
+    "focusBeforeClickMs": 100,
+    "focusAfterClickMs": 300
+  },
+  "mouse": {
+    "smoothSteps": 8,
+    "smoothStepDelayMs": 10,
+    "scrollAmount": 3
+  },
+  "workflow": {
+    "categoryDownCount": 4
+  },
+  "coordinates": {
+    "browserFocus": { "x": 600, "y": 360 },
+    "categorySelect": { "x": 696, "y": 774 },
+    "categoryOption": { "x": 677, "y": 868 },
+    "categoryConfirm": { "x": 923, "y": 838 },
+    "formSection1": { "x": 500, "y": 480 },
+    "formSection2": { "x": 500, "y": 650 },
+    "formSection3": { "x": 500, "y": 850 },
+    "emailField": { "x": 500, "y": 956 },
+    "submit": { "x": 1064, "y": 902 },
+    "confirm": { "x": 945, "y": 795 }
+  }
+}
