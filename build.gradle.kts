@@ -6,6 +6,12 @@ plugins {
 group = "jp.bluearchive.shit"
 version = "1.0-SNAPSHOT"
 
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
 application {
     mainClass = "jp.bluearchive.shit.Main"
 }
@@ -47,5 +53,63 @@ tasks.register<Jar>("fatJar") {
         }
     }) {
         exclude("META-INF/*.SF", "META-INF/*.DSA", "META-INF/*.RSA")
+    }
+}
+
+val portableAppName = "BlueArchiveFeedback"
+val portableVersion = "1.0.0"
+val jpackageInput = layout.buildDirectory.dir("jpackage-input")
+val jpackageOutput = layout.buildDirectory.dir("jpackage")
+
+val prepareJpackageInput by tasks.registering(Sync::class) {
+    dependsOn("fatJar")
+    from(tasks.named<Jar>("fatJar").flatMap { it.archiveFile })
+    into(jpackageInput)
+    rename { "application.jar" }
+}
+
+val jpackageAppImage by tasks.registering(Exec::class) {
+    group = "distribution"
+    description = "Builds a portable Windows application with an embedded Java 21 runtime."
+    dependsOn("test", prepareJpackageInput)
+    inputs.dir(jpackageInput)
+    inputs.files("config.json", "emails.txt", "content.txt")
+    outputs.dir(jpackageOutput.map { it.dir(portableAppName) })
+
+    doFirst {
+        delete(jpackageOutput.map { it.dir(portableAppName) })
+        jpackageOutput.get().asFile.mkdirs()
+        commandLine(
+            "F:/ZuluJDK/21/bin/jpackage.exe",
+            "--type", "app-image",
+            "--name", portableAppName,
+            "--app-version", portableVersion,
+            "--description", "Blue Archive automatic feedback tool",
+            "--vendor", "auto-BlueArchive-feedback",
+            "--input", jpackageInput.get().asFile.absolutePath,
+            "--dest", jpackageOutput.get().asFile.absolutePath,
+            "--main-jar", "application.jar",
+            "--main-class", application.mainClass.get(),
+            "--java-options", "-Dapp.home=\$APPDIR/..",
+            "--win-console"
+        )
+    }
+
+    doLast {
+        copy {
+            from("config.json", "emails.txt", "content.txt")
+            into(jpackageOutput.get().dir(portableAppName))
+        }
+    }
+}
+
+tasks.register<Zip>("portableZip") {
+    group = "distribution"
+    description = "Builds a ZIP containing the portable Windows application and Java 21 runtime."
+    dependsOn(jpackageAppImage)
+    archiveFileName = "$portableAppName-$portableVersion-windows.zip"
+    destinationDirectory = layout.buildDirectory.dir("distributions")
+    from(jpackageOutput.map { it.dir(portableAppName) }) {
+        into(portableAppName)
     }
 }

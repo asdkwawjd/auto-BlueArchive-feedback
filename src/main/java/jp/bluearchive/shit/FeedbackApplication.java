@@ -4,26 +4,25 @@ import java.awt.AWTException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
 
 final class FeedbackApplication {
 
-    private static final Path CONFIG_FILE = Paths.get("config.json");
-
     void run() {
+        Path appHome = ApplicationPaths.home();
+        Path configFile = appHome.resolve("config.json");
         AppConfig config;
         try {
-            config = AppConfig.load(CONFIG_FILE);
+            config = AppConfig.load(configFile);
         } catch (IOException | IllegalArgumentException e) {
             System.err.println("[ERROR] cant load config.json: " + e.getMessage());
             return;
         }
 
-        Path emailsFile = Paths.get(config.files().emails());
-        Path contentFile = Paths.get(config.files().content());
+        Path emailsFile = ApplicationPaths.resolve(appHome, config.files().emails());
+        Path contentFile = ApplicationPaths.resolve(appHome, config.files().content());
         String browserBinary = config.browser().binary().trim();
-        if (!browserBinary.isEmpty() && !Files.isRegularFile(Paths.get(browserBinary))) {
+        if (!browserBinary.isEmpty() && !Files.isRegularFile(ApplicationPaths.resolve(appHome, browserBinary))) {
             System.err.println("[ERROR] cant find Chrome binary: " + browserBinary);
             return;
         }

@@ -35,7 +35,7 @@ final class FeedbackSubmitter implements AutoCloseable {
         ChromeOptions options = new ChromeOptions();
         String browserBinary = config.browser().binary().trim();
         if (!browserBinary.isEmpty()) {
-            options.setBinary(browserBinary);
+            options.setBinary(ApplicationPaths.resolve(ApplicationPaths.home(), browserBinary).toString());
         }
         options.addArguments("--start-maximized");
         options.addArguments("--disable-blink-features=AutomationControlled");

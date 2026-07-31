@@ -44,3 +44,19 @@ The output is `build/libs/auto-report-ba-1.0-SNAPSHOT-all.jar`. Keep `config.jso
 ```shell
 java -jar build/libs/auto-report-ba-1.0-SNAPSHOT-all.jar
 ```
+
+## Portable Windows application
+JDK 21 must be available at `F:/ZuluJDK/21` on the build machine. Build the portable application with:
+
+```shell
+gradlew.bat portableZip
+```
+
+The outputs are:
+
+```text
+build/jpackage/BlueArchiveFeedback/BlueArchiveFeedback.exe
+build/distributions/BlueArchiveFeedback-1.0.0-windows.zip
+```
+
+The application directory includes a private Java 21 runtime. It does not need to be installed and does not use a system Java installation. Keep the complete directory together; `config.json`, `emails.txt`, and `content.txt` are read relative to `BlueArchiveFeedback.exe`.
