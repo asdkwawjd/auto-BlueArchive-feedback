@@ -46,7 +46,7 @@ java -jar build/libs/auto-report-ba-1.0-SNAPSHOT-all.jar
 ```
 
 ## Portable Windows application
-JDK 21 must be available at `F:/ZuluJDK/21` on the build machine. Build the portable application with:
+Build the portable application on Windows with JDK 21:
 
 ```shell
 gradlew.bat portableZip

@@ -56,10 +56,24 @@ tasks.register<Jar>("fatJar") {
     }
 }
 
+tasks.register<Sync>("jarDistribution") {
+    group = "distribution"
+    description = "Collects the executable JAR and its input text files."
+    dependsOn("fatJar")
+    from(tasks.named<Jar>("fatJar").flatMap { it.archiveFile })
+    from("content.txt", "emails.txt")
+    into(layout.buildDirectory.dir("distributions/jar"))
+}
+
 val portableAppName = "BlueArchiveFeedback"
 val portableVersion = "1.0.0"
 val jpackageInput = layout.buildDirectory.dir("jpackage-input")
 val jpackageOutput = layout.buildDirectory.dir("jpackage")
+val jpackageExecutable = javaToolchains.launcherFor {
+    languageVersion = JavaLanguageVersion.of(21)
+}.map { launcher ->
+    launcher.executablePath.asFile.parentFile.resolve("jpackage.exe")
+}
 
 val prepareJpackageInput by tasks.registering(Sync::class) {
     dependsOn("fatJar")
@@ -80,7 +94,7 @@ val jpackageAppImage by tasks.registering(Exec::class) {
         delete(jpackageOutput.map { it.dir(portableAppName) })
         jpackageOutput.get().asFile.mkdirs()
         commandLine(
-            "F:/ZuluJDK/21/bin/jpackage.exe",
+            jpackageExecutable.get().absolutePath,
             "--type", "app-image",
             "--name", portableAppName,
             "--app-version", portableVersion,
