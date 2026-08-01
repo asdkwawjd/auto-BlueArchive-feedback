@@ -1,4 +1,4 @@
-package jp.bluearchive.shit;
+package jp.bluearchive.shit.autofeedback;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;

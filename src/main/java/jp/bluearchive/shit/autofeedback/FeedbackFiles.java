@@ -1,4 +1,4 @@
-package jp.bluearchive.shit;
+package jp.bluearchive.shit.autofeedback;
 
 import java.io.IOException;
 import java.nio.file.Files;

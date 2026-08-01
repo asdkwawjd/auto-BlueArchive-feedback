@@ -1,4 +1,4 @@
-package jp.bluearchive.shit;
+package jp.bluearchive.shit.autofeedback;
 
 import com.github.kwhat.jnativehook.GlobalScreen;
 import com.github.kwhat.jnativehook.keyboard.NativeKeyEvent;

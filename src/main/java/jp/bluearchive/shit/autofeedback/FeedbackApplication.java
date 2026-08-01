@@ -1,4 +1,4 @@
-package jp.bluearchive.shit;
+package jp.bluearchive.shit.autofeedback;
 
 import java.awt.AWTException;
 import java.io.IOException;

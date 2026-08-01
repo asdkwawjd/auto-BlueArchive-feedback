@@ -1,4 +1,4 @@
-package jp.bluearchive.shit;
+package jp.bluearchive.shit.autofeedback;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.By;

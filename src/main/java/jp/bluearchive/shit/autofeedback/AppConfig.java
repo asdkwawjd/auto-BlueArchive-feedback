@@ -1,4 +1,4 @@
-package jp.bluearchive.shit;
+package jp.bluearchive.shit.autofeedback;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 

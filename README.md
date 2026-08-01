@@ -13,7 +13,7 @@ Configure the Chrome executable and automation settings in [config.json](config.
 
 If your path is different, update `browser.binary`. Set it to an empty string to let Selenium use the default Chrome installation.
 
-The target URL is intentionally fixed in [FeedbackSubmitter.java](src/main/java/jp/bluearchive/shit/FeedbackSubmitter.java).
+The target URL is intentionally fixed in [FeedbackSubmitter.java](src/main/java/jp/bluearchive/shit/autofeedback/FeedbackSubmitter.java).
 
 `config.json` also contains input file paths, browser wait time, delays, mouse behavior, workflow counts, and all screen coordinates. Invalid or incomplete configuration stops the program before browser automation starts.
 

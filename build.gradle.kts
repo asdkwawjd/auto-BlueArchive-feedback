@@ -3,7 +3,7 @@ plugins {
     application
 }
 
-group = "jp.bluearchive.shit"
+group = "jp.bluearchive.shit.autofeedback"
 version = "1.0-SNAPSHOT"
 
 java {
@@ -13,7 +13,7 @@ java {
 }
 
 application {
-    mainClass = "jp.bluearchive.shit.Main"
+    mainClass = "jp.bluearchive.shit.autofeedback.Main"
 }
 
 repositories {
