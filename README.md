@@ -9,11 +9,15 @@ An automated program capable of automatically sending feedback to the official w
 3.You must keep your Chrome browser set to its original default settings and your monitor resolution at 1920 x 1080, otherwise you will not be able to use this program properly.
 
 # How to use?
-First of all,you need to fill in the location of your Chrome browser.By default, its path is C:\Users\Administrator\AppData\Local\Google\Chrome\Bin\chromex.exe
+Configure the Chrome executable and automation settings in [config.json](config.json). By default, the Chrome path is `C:\Users\Administrator\AppData\Local\Google\Chrome\Bin\chromex.exe`.
 
-If your path is different from this one, please modify it.
+If your path is different, update `browser.binary`. Set it to an empty string to let Selenium use the default Chrome installation.
 
-It is in [Main.java](src/main/java/org/example/Main.java) at line 70
+The target URL is intentionally fixed in [FeedbackSubmitter.java](src/main/java/jp/bluearchive/shit/autofeedback/FeedbackSubmitter.java).
+
+`config.json` also contains input file paths, browser wait time, delays, mouse behavior, workflow counts, and all screen coordinates. Invalid or incomplete configuration stops the program before browser automation starts.
+
+If `config.json` does not exist, the program creates it with the default settings on startup. Existing configuration is never overwritten automatically.
 
 # What for?
 First of all,you should know that **Blue Archive JP** angered players with new gacha rules. I believe that before long, **BlueArchive CN** and **BlueArchive GL** will also adopt this card-drawing mechanism.Getting the rate-up character resets pity, making dual-unit pulls far more expensive. The devs kept the change after protests.
@@ -31,3 +35,28 @@ You can add multiple email addresses to [emails.txt](emails.txt).Remember, only 
 ![example](https://raw.githubusercontent.com/asdkwawjd/auto-BlueArchive-feedback/main/img.png)
 
 The content([content.txt](content.txt)) has already been written, and you can make modifications
+
+# Build
+Run `./gradlew fatJar` (`gradlew.bat fatJar` on Windows) to build an executable JAR with all runtime dependencies.
+
+The output is `build/libs/auto-report-ba-1.0-SNAPSHOT-all.jar`. Keep `config.json` in the working directory when running it. The email and content file locations are read from that configuration.
+
+```shell
+java -jar build/libs/auto-report-ba-1.0-SNAPSHOT-all.jar
+```
+
+## Portable Windows application
+Build the portable application on Windows with JDK 21:
+
+```shell
+gradlew.bat portableZip
+```
+
+The outputs are:
+
+```text
+build/jpackage/BlueArchiveFeedback/BlueArchiveFeedback.exe
+build/distributions/BlueArchiveFeedback-1.0.0-windows.zip
+```
+
+The application directory includes a private Java 21 runtime. It does not need to be installed and does not use a system Java installation. Keep the complete directory together; `config.json`, `emails.txt`, and `content.txt` are read relative to `BlueArchiveFeedback.exe`.

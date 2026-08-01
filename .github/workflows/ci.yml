@@ -1,0 +1,64 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  windows-build:
+    name: Test and build Windows application
+    runs-on: windows-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+
+      - name: Validate Gradle wrapper
+        uses: gradle/actions/wrapper-validation@v4
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Test and build distributions
+        run: .\gradlew.bat test jpackageAppImage jarDistribution --no-daemon
+
+      - name: Upload Windows application
+        uses: actions/upload-artifact@v4
+        with:
+          name: BlueArchiveFeedback-windows
+          path: build/jpackage/BlueArchiveFeedback/
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Upload executable JAR
+        uses: actions/upload-artifact@v4
+        with:
+          name: BlueArchiveFeedback-jar
+          path: build/distributions/jar/
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Upload test report
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-report
+          path: build/reports/tests/test/
+          if-no-files-found: ignore
+          retention-days: 7
